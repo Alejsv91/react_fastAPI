@@ -1,3 +1,53 @@
+# --- Entornos Virtuales (Virtual Environments) ---
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Caché de Python y compilados ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Variables de Entorno y Secretos (FastAPI / Pydantic) ---
+.env
+*.env
+.env.[a-zA-Z]*
+!.env.example
+secrets.toml
+
+# --- Base de datos local (si usas SQLite para desarrollo) ---
+*.db
+*.sqlite3
+
+# --- Sistema Operativo y Editores de Código ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Paquetes y Distribución ---
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+
+
 # Logs
 logs
 *.log
