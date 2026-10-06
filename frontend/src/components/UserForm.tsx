@@ -4,6 +4,7 @@ import {
   validateEmailFormat,
   validatePhoneFormat,
 } from "../helpers/validations";
+import { type UserCreate } from "../types/user";
 
 export default function UserForm() {
   // 1. Estado para capturar lo que el usuario escribe en el nombre
@@ -43,12 +44,43 @@ export default function UserForm() {
     setLastName(value);
     setLastNameError(validateStringIsEmpty(value, "apellido"));
   };
+
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFirstName(value); // Guardamos el valor actual
 
     // 4. LÓGICA DE VALIDACIÓN EN TIEMPO REAL
     setFirstNameError(validateStringIsEmpty(value, "nombre"));
+  };
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const userData: UserCreate = {
+      first_name: firstName,
+      last_name: lastName,
+      birth_date: birthdate,
+      email: email,
+      phone: phone,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert("¡Usuario registrado con éxito en la Base de Datos!");
+        console.log("Respuesta del backend:", result);
+      } else {
+        alert("Error al registrar el usuario en la base de datos!");
+      }
+    } catch (error) {
+      console.error("Error en la conexión con la API", error);
+      alert("No se pudo conectar con el servidor")
+    }
   };
 
   const isFormValid =
@@ -67,7 +99,7 @@ export default function UserForm() {
     <div style={styles.formContainer}>
       <h3 style={styles.title}>Formulario de Registro</h3>
 
-      <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit} style={styles.form} >
         {/* Campo: Nombre */}
         <div style={styles.inputGroup}>
           <label style={styles.label}>Nombre:</label>
