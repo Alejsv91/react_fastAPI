@@ -5,30 +5,31 @@ export default function UserForm() {
   // 1. Estado para capturar lo que el usuario escribe en el nombre
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
+  const [birthdate, setBirthdate] = useState<string>("");
 
   // 2. Estado para almacenar el mensaje de error del nombre (empieza vacío)
   const [firstNameError, setFirstNameError] = useState<string | null>(null);
   const [lastNameError, setLastNameError] = useState<string | null>(null);
+  const [birthdateError, setBirthdateError] = useState<string | null>(null);
 
   // 3. Función que se ejecuta cada vez que el usuario presiona una tecla
+  const handlebrithDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setBirthdate(value);
+    setBirthdateError(validateStringIsEmpty(value, "fecha de nacimiento"));
+  };
+
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLastName(value);
-    validateStringIsEmpty(value, "apellido")
-
-  }
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLastNameError(validateStringIsEmpty(value, "apellido"));
+  };
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFirstName(value); // Guardamos el valor actual
 
     // 4. LÓGICA DE VALIDACIÓN EN TIEMPO REAL
-    if (value.trim() === "") {
-      setFirstNameError("El nombre es obligatorio.");
-    } else if (value.trim().length < 3) {
-      setFirstNameError("El nombre debe tener al menos 3 caracteres.");
-    } else {
-      setFirstNameError(null); // Borra el error si todo está correcto
-    }
+    setFirstNameError(validateStringIsEmpty(value, "nombre"));
   };
 
   return (
@@ -44,7 +45,7 @@ export default function UserForm() {
             placeholder="Ej. Alejandro"
             style={styles.input}
             value={firstName} // Enlazamos el input al estado
-            onChange={handleNameChange} // Escuchamos el cambio de texto
+            onChange={handleFirstNameChange} // Escuchamos el cambio de texto
           />
           {/* 5. Si existe un error, lo renderizamos debajo del input */}
           {firstNameError && (
@@ -55,7 +56,31 @@ export default function UserForm() {
         {/* Los demás campos quedan estáticos por ahora para que hagas tus pruebas */}
         <div style={styles.inputGroup}>
           <label style={styles.label}>Apellido:</label>
-          <input type="text" placeholder="Ej. Solano" style={styles.input} />
+          <input
+            type="text"
+            placeholder="Ej. Solano"
+            style={styles.input}
+            value={lastName}
+            onChange={handleLastNameChange}
+          />
+          {lastNameError && (
+            <span style={styles.errorText}>{lastNameError}</span>
+          )}
+        </div>
+
+        {/* Campo: Fecha de Nacimiento */}
+        <div style={styles.inputGroup}>
+          <label style={styles.label}>Fecha de Nacimiento:</label>
+          <input
+            type="date"
+            style={styles.input}
+            value={birthdate} // Enlazado a nuestro estado string
+            onChange={handlebrithDateChange} // Escucha el cambio de fecha
+          />
+          {/* Renderizado del mensaje de error si existe */}
+          {birthdateError && (
+            <span style={styles.errorText}>{birthdateError}</span>
+          )}
         </div>
 
         <button type="submit" style={styles.submitButton}>
