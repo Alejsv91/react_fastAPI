@@ -1,30 +1,31 @@
+// src/App.tsx
 import { useState, useEffect } from "react";
 import UserForm from "./components/UserForm";
-import UserTable from "./components/UserTable";
+import UserTable from "./components/UserTable"; // 👈 Importamos la tabla
 import { userService } from "./services/userService";
 import { type UserResponse } from "./types/user";
 
 export default function App() {
-  // 1. Estado booleano para controlar la visibilidad del formulario (inicia oculto)
   const [showForm, setShowForm] = useState<boolean>(false);
+
+  // 1. Estado para almacenar los usuarios de la base de datos
   const [users, setUsers] = useState<UserResponse[]>([]);
 
-  //Get user from api
+  // 2. Función encargada de pedir los usuarios al backend
   const fetchUsers = async () => {
     try {
       const data = await userService.getAllUsers();
       setUsers(data);
     } catch (error) {
-      console.log("Error when try to fetch users", error);
+      console.error("Error cargando usuarios:", error);
     }
   };
 
-  // Ejecuta la consulta automaticamente al montar el componente
+  // 3. Ejecuta la consulta automáticamente al montar el componente
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // 2. Función para alternar (toggle) el estado entre true y false
   const toggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
@@ -41,7 +42,6 @@ export default function App() {
       <main style={styles.mainContent}>
         {/* Columna Izquierda: Control del Formulario */}
         <section style={styles.formSection}>
-          {/* Botón dinámico que cambia de texto según el estado */}
           <button
             onClick={toggleForm}
             style={showForm ? styles.buttonClose : styles.buttonOpen}
@@ -49,23 +49,23 @@ export default function App() {
             {showForm ? "✖ Cerrar Formulario" : "➕ Agregar Usuario"}
           </button>
 
-          {/* 3. RENDERIZADO CONDICIONAL: Si showForm es true, monta el componente */}
-          {showForm && <UserForm />}
+          {/* 4. Pasamos la función de recarga como prop al formulario */}
+          {showForm && <UserForm  />}
         </section>
 
-        {/* Columna Derecha: Lista de Usuarios */}
+        {/* Columna Derecha: Lista de Usuarios en Tabla */}
         <section style={styles.listSection}>
           <h2 style={styles.sectionTitle}>Usuarios Registrados</h2>
-          <div style={styles.placeholderCard}>
-            <p style={styles.placeholderText}>
-              La lista de usuarios se mantendrá estática en este espacio.
-            </p>
-          </div>
+
+          {/* 5. Reemplazamos el antiguo placeholder por nuestra nueva tabla tipada */}
+          <UserTable users={users} />
         </section>
       </main>
     </div>
   );
 }
+
+// ... Conservas exactamente tus mismos objetos de "const styles = { ... }" de App.tsx
 
 // 🎨 Estilos actualizados para los botones interactivos
 const styles = {
