@@ -1,23 +1,25 @@
-import axios, { type AxiosInstance } from 'axios';
+// src/services/api.ts
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = "http://localhost:8000";
 
-const api: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 10000, 
-});
+/**
+ * Helper centralizado para hacer peticiones HTTP asíncronas con tipado estricto.
+ */
+export const apiRequest = async <T>(
+  endpoint: string, 
+  options?: RequestInit
+): Promise<T> => {
+  const response = await fetch(`${BASE_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (!error.response) {
-      console.error('Error de red o el servidor FastAPI está apagado.');
-    }
-    return Promise.reject(error);
+  if (!response.ok) {
+    throw new Error(`Error en la petición: ${response.statusText}`);
   }
-);
 
-export default api;
+  return response.json() as Promise<T>;
+};

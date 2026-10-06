@@ -5,6 +5,7 @@ import {
   validatePhoneFormat,
 } from "../helpers/validations";
 import { type UserCreate } from "../types/user";
+import { userService } from "../services/userService";
 
 export default function UserForm() {
   // 1. Estado para capturar lo que el usuario escribe en el nombre
@@ -64,22 +65,13 @@ export default function UserForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
+      const result = await userService.createUser(userData);
 
-      if (response.ok) {
-        const result = await response.json();
-        alert("¡Usuario registrado con éxito en la Base de Datos!");
-        console.log("Respuesta del backend:", result);
-      } else {
-        alert("Error al registrar el usuario en la base de datos!");
-      }
+      alert("¡Usuario registrado con éxito!");
+      console.log("Usuario guardado:", result);
     } catch (error) {
       console.error("Error en la conexión con la API", error);
-      alert("No se pudo conectar con el servidor")
+      alert("No se pudo conectar con el servidor");
     }
   };
 
@@ -99,7 +91,7 @@ export default function UserForm() {
     <div style={styles.formContainer}>
       <h3 style={styles.title}>Formulario de Registro</h3>
 
-      <form onSubmit={handleSubmit} style={styles.form} >
+      <form onSubmit={handleSubmit} style={styles.form}>
         {/* Campo: Nombre */}
         <div style={styles.inputGroup}>
           <label style={styles.label}>Nombre:</label>
