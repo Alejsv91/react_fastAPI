@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validateStringIsEmpty } from "../helpers/validations";
 
 export default function UserForm() {
   // 1. Estado para capturar lo que el usuario escribe en el nombre
@@ -7,8 +8,15 @@ export default function UserForm() {
 
   // 2. Estado para almacenar el mensaje de error del nombre (empieza vacío)
   const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  const [lastNameError, setLastNameError] = useState<string | null>(null);
 
   // 3. Función que se ejecuta cada vez que el usuario presiona una tecla
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLastName(value);
+    validateStringIsEmpty(value, "apellido")
+
+  }
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFirstName(value); // Guardamos el valor actual
