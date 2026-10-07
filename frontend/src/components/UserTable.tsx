@@ -1,4 +1,3 @@
-// src/components/UserTable.tsx
 import React, { useEffect, useState } from "react";
 import { type UserResponse } from "../types/user";
 
@@ -14,14 +13,17 @@ export default function UserTable({ users }: UserTableProps) {
       </div>
     );
   }
+
   const [lastNameFilter, setLastNameFilter] = useState<string>("");
   const [userList, setUserList] = useState<UserResponse[]>(users);
 
   useEffect(() => {
-    if (lastNameFilter !== "") {
+    console.log("Ejecutando useEffect");
+    
+    if (lastNameFilter.trim() !== "") {
       setUserList(
         users.filter((user) =>
-          user.last_name.toLowerCase().includes(lastNameFilter.toLowerCase())
+          user.last_name?.toLowerCase().includes(lastNameFilter.toLowerCase())
         )
       );
     } else {
@@ -38,8 +40,16 @@ export default function UserTable({ users }: UserTableProps) {
 
   return (
     <div>
-      <label>Buscar por apellido</label>
-      <input onChange={handelLastNameFilterChange}></input>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ marginRight: "10px", fontWeight: "600" }}>Buscar por apellido: </label>
+        <input 
+          value={lastNameFilter}
+          onChange={handelLastNameFilterChange}
+          placeholder="Escribe un apellido..."
+          style={{ padding: "6px", borderRadius: "4px", border: "1px solid #ccc" }}
+        />
+      </div>
+
       <div style={styles.tableContainer}>
         <table style={styles.table}>
           <thead>
@@ -52,15 +62,23 @@ export default function UserTable({ users }: UserTableProps) {
             </tr>
           </thead>
           <tbody>
-            {userList.map((user) => (
-              <tr key={user.id} style={styles.tr}>
-                <td style={styles.td}>{user.id}</td>
-                <td style={styles.td}>{user.first_name}</td>
-                <td style={styles.td}>{user.last_name}</td>
-                <td style={styles.td}>{user.email}</td>
-                <td style={styles.td}>{user.phone || "-"}</td>
+            {userList.length > 0 ? (
+              userList.map((user) => (
+                <tr key={user.id} style={styles.tr}>
+                  <td style={styles.td}>{user.id}</td>
+                  <td style={styles.td}>{user.first_name}</td>
+                  <td style={styles.td}>{user.last_name}</td>
+                  <td style={styles.td}>{user.email}</td>
+                  <td style={styles.td}>{user.phone || "-"}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#888" }}>
+                  No se encontraron usuarios con ese apellido.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
