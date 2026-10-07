@@ -1,3 +1,7 @@
+# Ignorar todas las carpetas de caché de Python (muy recomendado)
+__pycache__/
+*.py[cod]
+
 *cpython*
 
 # --- Entornos Virtuales (Virtual Environments) ---
