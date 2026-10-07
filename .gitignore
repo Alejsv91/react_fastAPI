@@ -1,3 +1,5 @@
+*cpython*
+
 # --- Entornos Virtuales (Virtual Environments) ---
 .venv/
 venv/
@@ -14,6 +16,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+*cpython-
 
 # --- Variables de Entorno y Secretos (FastAPI / Pydantic) ---
 .env

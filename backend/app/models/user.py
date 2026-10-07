@@ -1,11 +1,9 @@
 # app/models/user.py
 
 from datetime import date
-from sqlalchemy import String, Date
+from sqlalchemy import String, Date, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
-
 from app.database import Base
-
 
 class User(Base):
     __tablename__ = "users"
@@ -18,3 +16,4 @@ class User(Base):
 
     email: Mapped[str] = mapped_column(String(255), unique=True)
     phone: Mapped[str] = mapped_column(String(20))
+    role_id: Mapped[int] = mapped_column(ForeignKey('roles.id'))
