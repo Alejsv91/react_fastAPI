@@ -7,6 +7,6 @@ class Role(Base):
     __tablename__ = "roles"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    role_name: Mapped[str] = mapped_column(String(100), unique=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True)
     description: Mapped[str] = mapped_column(String(100))
     
