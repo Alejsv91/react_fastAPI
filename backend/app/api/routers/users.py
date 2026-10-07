@@ -34,7 +34,6 @@ def create_user(
 
     return db_user
 
-
 @router.get(
     "",
     response_model=list[UserResponse]
