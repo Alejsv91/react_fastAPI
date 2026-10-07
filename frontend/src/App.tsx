@@ -50,7 +50,7 @@ export default function App() {
           </button>
 
           {/* 4. Pasamos la función de recarga como prop al formulario */}
-          {showForm && <UserForm  />}
+          {showForm && <UserForm onUserAdded={fetchUsers} />}
         </section>
 
         {/* Columna Derecha: Lista de Usuarios en Tabla */}

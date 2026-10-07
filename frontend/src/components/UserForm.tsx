@@ -7,7 +7,11 @@ import {
 import { type UserCreate } from "../types/user";
 import { userService } from "../services/userService";
 
-export default function UserForm() {
+interface UserFormProps {
+  onUserAdded: () => void;
+}
+
+export default function UserForm({ onUserAdded }: UserFormProps) {
   // 1. Estado para capturar lo que el usuario escribe en el nombre
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -69,6 +73,13 @@ export default function UserForm() {
 
       alert("¡Usuario registrado con éxito!");
       console.log("Usuario guardado:", result);
+      //Clean form
+      onUserAdded();
+      setFirstName("");
+      setLastName("");
+      setBirthdate("");
+      setEmail("");
+      setPhone("");
     } catch (error) {
       console.error("Error en la conexión con la API", error);
       alert("No se pudo conectar con el servidor");
