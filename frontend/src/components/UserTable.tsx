@@ -14,22 +14,30 @@ export default function UserTable({ users }: UserTableProps) {
       </div>
     );
   }
-  const [lastNameFilter, setLastNameFilter] = useState<string | null>("");
-// Quede aqui
-//   useEffect(()=> {}, [
-//     // Search by lastName
-//     users = users.filter
-//   ]);
+  const [lastNameFilter, setLastNameFilter] = useState<string>("");
+  const [userList, setUserList] = useState<UserResponse[]>(users);
 
-  const handelLastNameFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (lastNameFilter !== "") {
+      setUserList(
+        users.filter((user) =>
+          user.last_name.toLowerCase().includes(lastNameFilter.toLowerCase())
+        )
+      );
+    } else {
+      setUserList(users);
+    }
+  }, [lastNameFilter, users]);
+
+  const handelLastNameFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setLastNameFilter(value);
-    console.log(`Nuevo valor ${lastNameFilter}`);
   };
 
   return (
     <div>
-        {/* Crear con el use effect una funcion para buscar por apellido */}
       <label>Buscar por apellido</label>
       <input onChange={handelLastNameFilterChange}></input>
       <div style={styles.tableContainer}>
@@ -44,7 +52,7 @@ export default function UserTable({ users }: UserTableProps) {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {userList.map((user) => (
               <tr key={user.id} style={styles.tr}>
                 <td style={styles.td}>{user.id}</td>
                 <td style={styles.td}>{user.first_name}</td>
