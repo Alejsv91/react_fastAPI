@@ -8,6 +8,7 @@ import { type UserResponse } from "./types/user";
 export default function App() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [users, setUsers] = useState<UserResponse[]>([]);
+  const [activeTab, setActiveTab] = useState<"users" | "roles">("users");
 
   const fetchUsers = async () => {
     try {
@@ -30,34 +31,83 @@ export default function App() {
     <div style={styles.dashboardContainer}>
       <header style={styles.header}>
         <h1 style={styles.mainTitle}>Panel de Gestión de Usuarios</h1>
-        <p style={styles.subtitle}>Cargill Internal Engineering Standard</p>
+        <p style={styles.subtitle}> Internal Engineering Standard</p>
+        <ul style={styles.tabsContainer}>
+          <li
+            onClick={() => setActiveTab("users")}
+            style={
+              activeTab === "users" ? styles.tabActive : styles.tabInactive
+            }
+          >
+            Users
+          </li>
+          <li
+            onClick={() => setActiveTab("roles")}
+            style={
+              activeTab === "roles" ? styles.tabActive : styles.tabInactive
+            }
+          >
+            Roles
+          </li>
+        </ul>
       </header>
 
       <hr style={styles.divider} />
 
       <main style={styles.mainContent}>
-        <section style={styles.formSection}>
-          <button
-            onClick={toggleForm}
-            style={showForm ? styles.buttonClose : styles.buttonOpen}
-          >
-            {showForm ? "✖ Cerrar Formulario" : "➕ Agregar Usuario"}
-          </button>
+        {activeTab === "users" && (
+          <>
+            <section style={styles.formSection}>
+              <button
+                onClick={toggleForm}
+                style={showForm ? styles.buttonClose : styles.buttonOpen}
+              >
+                {showForm ? "✖ Cerrar Formulario" : "➕ Agregar Usuario"}
+              </button>
 
-          {showForm && <UserForm onUserAdded={fetchUsers} />}
-        </section>
+              {showForm && <UserForm onUserAdded={fetchUsers} />}
+            </section>
 
-        <section style={styles.listSection}>
-          <h2 style={styles.sectionTitle}>Usuarios Registrados</h2>
+            <section style={styles.listSection}>
+              <h2 style={styles.sectionTitle}>Usuarios Registrados</h2>
 
-          <UserTable users={users} />
-        </section>
+              <UserTable users={users} />
+            </section>
+          </>
+        )}
       </main>
     </div>
   );
 }
 
 const styles = {
+  tabsContainer: {
+    listStyleType: "none",
+    display: "flex",
+    gap: "4px",
+    padding: 0,
+    margin: "0 0 30px 0",
+    borderBottom: "1px solid #e0e0e0",
+  },
+  tabActive: {
+    padding: "12px 24px",
+    cursor: "pointer",
+    fontSize: "15px",
+    fontWeight: "600",
+    color: "#0d6efd", // Azul institucional
+    borderBottom: "3px solid #0d6efd",
+    marginBottom: "-1px", // Se superpone al borde del contenedor
+    transition: "all 0.2s ease",
+  },
+  tabInactive: {
+    padding: "12px 24px",
+    cursor: "pointer",
+    fontSize: "15px",
+    fontWeight: "500",
+    color: "#7f8c8d",
+    borderBottom: "3px solid transparent",
+    transition: "all 0.2s ease",
+  },
   dashboardContainer: {
     padding: "40px",
     fontFamily: "Segoe UI, Roboto, Helvetica, Arial, sans-serif",
