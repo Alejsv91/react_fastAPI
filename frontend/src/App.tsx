@@ -1,17 +1,14 @@
 // src/App.tsx
 import { useState, useEffect } from "react";
 import UserForm from "./components/UserForm";
-import UserTable from "./components/UserTable"; // 👈 Importamos la tabla
+import UserTable from "./components/UserTable";
 import { userService } from "./services/userService";
 import { type UserResponse } from "./types/user";
 
 export default function App() {
   const [showForm, setShowForm] = useState<boolean>(false);
-
-  // 1. Estado para almacenar los usuarios de la base de datos
   const [users, setUsers] = useState<UserResponse[]>([]);
 
-  // 2. Función encargada de pedir los usuarios al backend
   const fetchUsers = async () => {
     try {
       const data = await userService.getAllUsers();
@@ -21,7 +18,6 @@ export default function App() {
     }
   };
 
-  // 3. Ejecuta la consulta automáticamente al montar el componente
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -40,7 +36,6 @@ export default function App() {
       <hr style={styles.divider} />
 
       <main style={styles.mainContent}>
-        {/* Columna Izquierda: Control del Formulario */}
         <section style={styles.formSection}>
           <button
             onClick={toggleForm}
@@ -49,15 +44,12 @@ export default function App() {
             {showForm ? "✖ Cerrar Formulario" : "➕ Agregar Usuario"}
           </button>
 
-          {/* 4. Pasamos la función de recarga como prop al formulario */}
           {showForm && <UserForm onUserAdded={fetchUsers} />}
         </section>
 
-        {/* Columna Derecha: Lista de Usuarios en Tabla */}
         <section style={styles.listSection}>
           <h2 style={styles.sectionTitle}>Usuarios Registrados</h2>
 
-          {/* 5. Reemplazamos el antiguo placeholder por nuestra nueva tabla tipada */}
           <UserTable users={users} />
         </section>
       </main>
@@ -65,9 +57,6 @@ export default function App() {
   );
 }
 
-// ... Conservas exactamente tus mismos objetos de "const styles = { ... }" de App.tsx
-
-// 🎨 Estilos actualizados para los botones interactivos
 const styles = {
   dashboardContainer: {
     padding: "40px",
