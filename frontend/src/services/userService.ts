@@ -1,7 +1,7 @@
 import { apiRequest } from "./api";
 import { type UserCreate, type UserResponse } from "../types/user";
 
-const usersEndpoint = "/users"
+const usersEndpoint = "/users";
 
 export const userService = {
   /**
