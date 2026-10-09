@@ -1,9 +1,7 @@
 import { apiRequest } from "./api";
-import {
-  type RoleCreate,
-  type RoleParams,
-  type RoleResponse,
-} from "../types/role";
+import { type RoleCreate, type RoleResponse } from "../types/role";
+import {type PaginationParams} from "../types/pagination";
+import { buildQueryString } from "../helpers/url.helper";
 
 const rolesEndPoint = "/roles";
 
@@ -15,16 +13,10 @@ export const rolesService = {
     });
   },
 
-  getAllRoles: async (params?: RoleParams): Promise<RoleResponse[]> => {
-    let querySelector = "";
+  getAllRoles: async (params?: PaginationParams): Promise<RoleResponse[]> => {
+    const query = buildQueryString(params); // Genera "?page=1&size=10"
 
-    if (params) {
-      const searchParams = new URLSearchParams(
-        Object.entries(params).map(([key, val]) => [key, String(val)])
-      );
-      querySelector = `?${searchParams.toString()}`;
-    }
-    return apiRequest<RoleResponse[]>(`${rolesEndPoint}${querySelector}`, {
+    return apiRequest<RoleResponse[]>(`${rolesEndPoint}${query}`, {
       method: "GET",
     });
   },
