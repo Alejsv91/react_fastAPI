@@ -110,5 +110,41 @@ export const sharedStyles = {
       width: "100%",
       transition: "background-color 0.2s",
     },
+    tableContainer: {
+      overflowX: "auto" as const,
+      boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
+      borderRadius: "8px",
+      border: "1px solid #e0e0e0",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse" as const,
+      fontSize: "14px",
+      textAlign: "left" as const,
+    },
+    thRow: {
+      backgroundColor: "#f8f9fa",
+      borderBottom: "2px solid #e0e0e0",
+    },
+    th: {
+      padding: "12px 16px",
+      fontWeight: "600",
+      color: "#495057",
+    },
+    tr: {
+      borderBottom: "1px solid #efefef",
+    },
+    td: {
+      padding: "12px 16px",
+      color: "#212529",
+    },
+    emptyState: {
+      padding: "30px",
+      textAlign: "center" as const,
+      backgroundColor: "#fafbfc",
+      border: "1px dashed #bdc3c7",
+      borderRadius: "8px",
+      color: "#7f8c8d",
+    },
   };
   
