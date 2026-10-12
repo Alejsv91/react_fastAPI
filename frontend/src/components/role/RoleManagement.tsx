@@ -1,6 +1,6 @@
 import RoleForm from "./RoleForm";
 import { sharedStyles } from "../../styles/theme";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import RolesTable from "./RolesTable";
 import { type RoleResponse } from "../../types/role";
 import { rolesService } from "../../services/roleService";
@@ -11,25 +11,22 @@ export default function RoleManagement() {
     usePagination(1, 10);
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [roles, setRoles] = useState<RoleResponse[]>([]);
   const [currentRoles, setCurrentRoles] = useState<RoleResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(false)
-  const totalPages = Math.ceil(roles.length / pageSize);
+  const [isLoading, setIsLoading] = useState(false);
+  const totalPages = Math.ceil(currentRoles.length / pageSize);
 
   const fetchRoles = async () => {
     try {
       setIsLoading(true);
       const data = await rolesService.getAllRoles({ page: 1, size: 5 });
       let roles = data.items;
-      setRoles(roles);
       setCurrentRoles(
         roles.slice((currentPage - 1) * pageSize, currentPage * pageSize)
       );
       console.log(`roles q: ${roles.length}`);
     } catch (error) {
       console.error("An error happen when system try to fetch roles ", error);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -41,6 +38,12 @@ export default function RoleManagement() {
   const toggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
+
+  const handleDeleteRoleFromState = useCallback((idToDelete: number) => {
+    setCurrentRoles((prevRoles) =>
+      prevRoles.filter((role) => role.id !== idToDelete)
+    );
+  }, []);
 
   return (
     <>
@@ -55,7 +58,11 @@ export default function RoleManagement() {
       </section>
       <section style={sharedStyles.listSection}>
         <h2 style={sharedStyles.sectionTitle}>Roles registrados</h2>
-        <RolesTable roles={currentRoles} isLoading={isLoading} />
+        <RolesTable
+          roles={currentRoles}
+          isLoading={isLoading}
+          onDeleteRole={handleDeleteRoleFromState}
+        />
         <div className="pagination-controls">
           <button onClick={prevPage} disabled={currentPage === 1}>
             Anterior

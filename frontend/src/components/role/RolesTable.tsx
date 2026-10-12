@@ -1,12 +1,14 @@
 import type { RoleResponse } from "../../types/role";
 import { sharedStyles } from "../../styles/theme";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { DeleteButton } from "./DeleteButton";
 
 interface RolesTableProps {
   roles: RoleResponse[];
-  isLoading :boolean
+  isLoading :boolean;
+  onDeleteRole: (id: number) => void;
 }
-export default function RolesTable({ roles, isLoading}: RolesTableProps) {
+export default function RolesTable({ roles, isLoading, onDeleteRole}: RolesTableProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredRole = useMemo(() => {
@@ -26,6 +28,11 @@ export default function RolesTable({ roles, isLoading}: RolesTableProps) {
     const value = e.target.value;
     setSearchTerm(value);
   };
+
+  const handleDelete = useCallback((id: number) => {
+    onDeleteRole(id);
+    console.log("Eliminando id: ", id);
+  }, [onDeleteRole]); 
 
   if (isLoading) return <p>CargandoRoles</p>;
 
@@ -71,6 +78,9 @@ export default function RolesTable({ roles, isLoading}: RolesTableProps) {
                   <td style={sharedStyles.td}>{role.id}</td>
                   <td style={sharedStyles.td}>{role.name}</td>
                   <td style={sharedStyles.td}>{role.description}</td>
+                  <td>
+                    <DeleteButton roleId={role.id} onDelete={handleDelete}></DeleteButton>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -83,7 +93,7 @@ export default function RolesTable({ roles, isLoading}: RolesTableProps) {
                     color: "#888",
                   }}
                 >
-                  No se encontraron usuarios con ese apellido.
+                  No se encontraron roles con ese nombre.
                 </td>
               </tr>
             )}
