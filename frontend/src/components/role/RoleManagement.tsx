@@ -11,9 +11,9 @@ export default function RoleManagement() {
     usePagination(1, 10);
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [currentRoles, setCurrentRoles] = useState<RoleResponse[]>([]);
+  const [roles, setCurrentRoles] = useState<RoleResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const totalPages = Math.ceil(currentRoles.length / pageSize);
+  const totalPages = Math.ceil(roles.length / pageSize);
 
   const fetchRoles = async () => {
     try {
@@ -59,7 +59,7 @@ export default function RoleManagement() {
       <section style={sharedStyles.listSection}>
         <h2 style={sharedStyles.sectionTitle}>Roles registrados</h2>
         <RolesTable
-          roles={currentRoles}
+          roles={roles}
           isLoading={isLoading}
           onDeleteRole={handleDeleteRoleFromState}
         />
