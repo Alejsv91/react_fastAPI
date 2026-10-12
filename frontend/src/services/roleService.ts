@@ -1,6 +1,6 @@
 import { apiRequest } from "./api";
 import { type RoleCreate, type RoleResponse } from "../types/role";
-import {type PaginationParams} from "../types/pagination";
+import {type PaginationParams, type PaginationResponse} from "../types/pagination";
 import { buildQueryString } from "../helpers/url.helper";
 
 const rolesEndPoint = "/roles";
@@ -13,10 +13,10 @@ export const rolesService = {
     });
   },
 
-  getAllRoles: async (params?: PaginationParams): Promise<RoleResponse[]> => {
-    const query = buildQueryString(params); // Genera "?page=1&size=10"
+  getAllRoles: async (params?: PaginationParams): Promise<PaginationResponse<RoleResponse>> => {
+    const query = buildQueryString(params); 
 
-    return apiRequest<RoleResponse[]>(`${rolesEndPoint}${query}`, {
+    return apiRequest<PaginationResponse<RoleResponse>>(`${rolesEndPoint}${query}`, {
       method: "GET",
     });
   },
