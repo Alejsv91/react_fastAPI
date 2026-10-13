@@ -1,9 +1,8 @@
 export interface RoleCreate {
-    name: String,
-    description: String
+    name: string,
+    description: string
 }
 
 export interface RoleResponse extends RoleCreate {
     id: number
 }
-

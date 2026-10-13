@@ -39,10 +39,20 @@ export default function RoleManagement() {
     setShowForm((prevShowForm) => !prevShowForm);
   };
 
-  const handleDeleteRoleFromState = useCallback((idToDelete: number) => {
-    setCurrentRoles((prevRoles) =>
-      prevRoles.filter((role) => role.id !== idToDelete)
-    );
+  const handleDeleteRoleFromState = useCallback(async (idToDelete: number) => {
+    try {
+      setIsLoading(true);
+      await rolesService.deleteRole(idToDelete);
+      setCurrentRoles((prevRoles) =>
+        prevRoles.filter((role) => role.id !== idToDelete)
+      );
+    } catch (error) {
+      // Tengo que cambiar el endpoint
+      console.error("An error happen when system try to delete the role. ", error);
+    } finally {
+      setIsLoading(false);
+    }
+    
   }, []);
 
   return (

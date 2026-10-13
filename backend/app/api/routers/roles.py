@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Depends, status, Query, HTTPException
 from app.database import get_db
 from sqlalchemy.orm import Session
 from app.schemas.roles import RoleResponse, RoleCreate, PaginatedRoleResponse
@@ -8,6 +8,24 @@ router = APIRouter(
     prefix="/roles",
     tags=["roles"]
 )
+
+@router.delete("/{role_id}", response_model=None, status_code=status.HTTP_204_NO_CONTENT)
+def delete_role(
+    role_id: int,
+    db: Session = Depends(get_db)
+):
+    try:
+        db_role = db.query(Role).filter(Role.id == role_id).first()
+        
+        if not db_role:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND
+                                , detail="Role doesn't exist")
+        
+        db.delete(db_role)
+        db.commit()
+        return
+    except:
+        print("An error in the code")
 
 @router.post("", response_model=RoleResponse, status_code=status.HTTP_201_CREATED)
 def create_role(

@@ -1,11 +1,20 @@
 import { apiRequest } from "./api";
 import { type RoleCreate, type RoleResponse } from "../types/role";
-import {type PaginationParams, type PaginationResponse} from "../types/pagination";
+import {
+  type PaginationParams,
+  type PaginationResponse,
+} from "../types/pagination";
 import { buildQueryString } from "../helpers/url.helper";
 
 const rolesEndPoint = "/roles";
 
 export const rolesService = {
+  deleteRole: async (id: number): Promise<void> => {
+    apiRequest<void>(`${rolesEndPoint}/${id}`, {
+      method: "DELETE",
+    });
+  },
+
   createRole: async (roleData: RoleCreate): Promise<RoleResponse> => {
     return apiRequest<RoleResponse>(rolesEndPoint, {
       method: "POST",
@@ -13,11 +22,16 @@ export const rolesService = {
     });
   },
 
-  getAllRoles: async (params?: PaginationParams): Promise<PaginationResponse<RoleResponse>> => {
-    const query = buildQueryString(params); 
+  getAllRoles: async (
+    params?: PaginationParams
+  ): Promise<PaginationResponse<RoleResponse>> => {
+    const query = buildQueryString(params);
 
-    return apiRequest<PaginationResponse<RoleResponse>>(`${rolesEndPoint}${query}`, {
-      method: "GET",
-    });
+    return apiRequest<PaginationResponse<RoleResponse>>(
+      `${rolesEndPoint}${query}`,
+      {
+        method: "GET",
+      }
+    );
   },
 };

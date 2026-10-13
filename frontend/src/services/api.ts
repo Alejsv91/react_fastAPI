@@ -21,5 +21,9 @@ export const apiRequest = async <T>(
     throw new Error(`Error en la petición: ${response.statusText}`);
   }
 
+  if (response.status === 204) {
+    return {} as T; // O puedes retornar 'null as T' según prefieras en tu frontend
+  }
+
   return response.json() as Promise<T>;
 };
