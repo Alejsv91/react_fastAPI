@@ -146,5 +146,52 @@ export const sharedStyles = {
       borderRadius: "8px",
       color: "#7f8c8d",
     },
+    formContainer: {
+      backgroundColor: "#f8f9fa",
+      padding: "24px",
+      borderRadius: "8px",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
+      width: "100%",
+      marginTop: "15px",
+    },
+    title: {
+      marginTop: 0,
+      marginBottom: "20px",
+      color: "#212529",
+      fontSize: "18px",
+    },
+    form: { display: "flex", flexDirection: "column" as const, gap: "16px" },
+    inputGroup: { display: "flex", flexDirection: "column" as const, gap: "6px" },
+    label: { fontSize: "14px", fontWeight: "600", color: "#495057" },
+    input: {
+      padding: "10px",
+      borderRadius: "4px",
+      border: "1px solid #ced4da",
+      fontSize: "14px",
+    },
+    errorText: {
+      color: "#dc3545",
+      fontSize: "12px",
+      fontWeight: "600",
+      marginTop: "2px",
+    }, // Rojo de alerta
+  
+    submitButton: {
+      backgroundColor: "#198754", // Verde cuando está activo
+      color: "#fff",
+      border: "none",
+      padding: "12px",
+      borderRadius: "4px",
+      cursor: "pointer", // Cursor de manita
+      fontWeight: "600" as const,
+      fontSize: "14px",
+      marginTop: "10px",
+      transition: "background-color 0.2s ease", // Suaviza el cambio de color
+    },
+    disabledButton: {
+      backgroundColor: "#6c757d", // Gris clásico de Bootstrap para deshabilitado
+      cursor: "not-allowed", // Cursor con el símbolo de prohibido 🚫
+      opacity: 0.65,
+    },
   };
   
